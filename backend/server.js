@@ -9,7 +9,12 @@ require('dotenv').config();
 const app  = express();
 const PORT = process.env.PORT || 3000;
 const JWT_SECRET  = process.env.JWT_SECRET  || 'localshop_secret_key_change_in_prod';
-const MONGO_URI   = process.env.MONGO_URI   || 'mongodb://localhost:27017/localshop';
+const MONGO_URI = process.env.MONGO_URI;
+
+if (!MONGO_URI) {
+  console.error('❌ MONGO_URI is not set in environment variables. Exiting.');
+  process.exit(1);
+}
 
 /* ── Middleware ── */
 app.use(cors());
