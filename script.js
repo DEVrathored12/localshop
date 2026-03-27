@@ -6,7 +6,7 @@
 /* ══════════════════════════════════════════
    CONFIG
 ══════════════════════════════════════════ */
-const API_BASE = 'http://localhost:3000/api';
+const API_BASE = 'https://localshop-u4as.onrender.com/api';
 
 /* ══════════════════════════════════════════
    RICH SEED DATA — 24 Shops

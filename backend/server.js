@@ -15,11 +15,8 @@ const MONGO_URI   = process.env.MONGO_URI   || 'mongodb://localhost:27017/locals
 app.use(cors());
 app.use(express.json());
 
-// Serve frontend static files
-app.use(express.static(path.join(__dirname, 'frontend')));
-
 /* ── MongoDB Connection ── */
-mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(MONGO_URI)
   .then(() => console.log('✅ MongoDB connected'))
   .catch(err => console.error('❌ MongoDB error:', err.message));
 
@@ -199,11 +196,6 @@ app.delete('/api/shops/:id', authGuard, async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
-});
-
-/* ── Catch-all: serve frontend ── */
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
 });
 
 /* ── Start server ── */
