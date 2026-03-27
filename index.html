@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LocalShop — Find Shops Near You</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+</head>
+<body class="page-home">
+
+  <!-- ── NAVBAR ── -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-brand">
+      <span class="brand-icon">🛍</span>
+      <span class="brand-name">LocalShop</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="index.html" class="nav-link active"><i class="fas fa-home"></i> Home</a></li>
+      <li><a href="search.html" class="nav-link"><i class="fas fa-search"></i> Search</a></li>
+      <li><a href="add-shop.html" class="nav-link"><i class="fas fa-plus-circle"></i> Add Shop</a></li>
+      <li><a href="about.html" class="nav-link"><i class="fas fa-info-circle"></i> About</a></li>
+      <li><a href="login.html" class="nav-link nav-login"><i class="fas fa-user"></i> Login</a></li>
+    </ul>
+    <button class="nav-toggle" id="navToggle"><i class="fas fa-bars"></i></button>
+  </nav>
+
+  <!-- ── HERO ── -->
+  <section class="hero">
+    <div class="hero-bg-orb orb1"></div>
+    <div class="hero-bg-orb orb2"></div>
+    <div class="hero-bg-orb orb3"></div>
+
+    <div class="hero-content">
+      <span class="hero-badge">📍 Discover Local</span>
+      <h1 class="hero-title">Find Shops <span class="gradient-text">Near You</span></h1>
+      <p class="hero-subtitle">Explore local businesses, browse products, and support your community — all in one place.</p>
+
+      <div class="hero-search glass-card">
+        <i class="fas fa-search search-icon"></i>
+        <input type="text" id="heroSearch" placeholder="Search shops, categories, locations…" />
+        <button class="btn-primary" onclick="goSearch()">Search</button>
+      </div>
+
+      <div class="hero-stats">
+        <div class="stat"><span class="stat-num" data-target="240">0</span><span class="stat-label">Shops</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat"><span class="stat-num" data-target="18">0</span><span class="stat-label">Categories</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat"><span class="stat-num" data-target="1200">0</span><span class="stat-label">Happy Users</span></div>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="floating-card fc1 glass-card">
+        <div class="fc-icon">☕</div>
+        <div><strong>Café Aroma</strong><br/><small>Coffee & Snacks</small></div>
+      </div>
+      <div class="floating-card fc2 glass-card">
+        <div class="fc-icon">👗</div>
+        <div><strong>Style Studio</strong><br/><small>Fashion</small></div>
+      </div>
+      <div class="floating-card fc3 glass-card">
+        <div class="fc-icon">📚</div>
+        <div><strong>Book Nook</strong><br/><small>Books & Stationery</small></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FEATURED SHOPS ── -->
+  <section class="featured-section">
+    <div class="section-header">
+      <h2>Featured <span class="gradient-text">Shops</span></h2>
+      <p>Handpicked local businesses you'll love</p>
+    </div>
+
+    <div class="shops-grid" id="featuredGrid">
+      <!-- Populated by JS -->
+    </div>
+
+    <div class="view-all-wrap">
+      <a href="search.html" class="btn-outline">View All Shops <i class="fas fa-arrow-right"></i></a>
+    </div>
+  </section>
+
+  <!-- ── CATEGORIES ── -->
+  <section class="categories-section">
+    <div class="section-header">
+      <h2>Browse by <span class="gradient-text">Category</span></h2>
+    </div>
+    <div class="categories-grid">
+      <div class="cat-card glass-card" onclick="searchByCategory('Food')"><span>🍔</span><p>Food</p></div>
+      <div class="cat-card glass-card" onclick="searchByCategory('Fashion')"><span>👗</span><p>Fashion</p></div>
+      <div class="cat-card glass-card" onclick="searchByCategory('Electronics')"><span>📱</span><p>Electronics</p></div>
+      <div class="cat-card glass-card" onclick="searchByCategory('Books')"><span>📚</span><p>Books</p></div>
+      <div class="cat-card glass-card" onclick="searchByCategory('Health')"><span>💊</span><p>Health</p></div>
+      <div class="cat-card glass-card" onclick="searchByCategory('Beauty')"><span>💄</span><p>Beauty</p></div>
+      <div class="cat-card glass-card" onclick="searchByCategory('Sports')"><span>⚽</span><p>Sports</p></div>
+      <div class="cat-card glass-card" onclick="searchByCategory('Home')"><span>🏠</span><p>Home</p></div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer class="footer">
+    <div class="footer-brand">
+      <span class="brand-icon">🛍</span>
+      <span class="brand-name">LocalShop</span>
+    </div>
+    <p class="footer-tagline">Supporting local, one shop at a time.</p>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="search.html">Search</a>
+      <a href="add-shop.html">Add Shop</a>
+      <a href="about.html">About</a>
+    </div>
+    <p class="footer-copy">© 2025 LocalShop. Built with ❤️ for local communities.</p>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    // Navigate to search with prefilled query
+    function goSearch() {
+      const q = document.getElementById('heroSearch').value;
+      if (q) window.location.href = `search.html?q=${encodeURIComponent(q)}`;
+      else window.location.href = 'search.html';
+    }
+    document.getElementById('heroSearch').addEventListener('keydown', e => {
+      if (e.key === 'Enter') goSearch();
+    });
+    function searchByCategory(cat) {
+      window.location.href = `search.html?category=${encodeURIComponent(cat)}`;
+    }
+
+    // Render featured shops (first 6)
+    document.addEventListener('DOMContentLoaded', async () => {
+      const grid = document.getElementById('featuredGrid');
+      try {
+        const res  = await fetch(`${API_BASE}/api/get-shops`);
+        const data = await res.json();
+        const shops = (data.shops || []).slice(0, 6);
+        grid.innerHTML = shops.map(s => createShopCard(s)).join('');
+      } catch {
+        grid.innerHTML = '<p style="color:red;padding:1rem">❌ Cannot connect to server.</p>';
+      }
+      animateCounters();
+    });
+
+    // Counter animation
+    function animateCounters() {
+      document.querySelectorAll('.stat-num').forEach(el => {
+        const target = +el.dataset.target;
+        let current = 0;
+        const step = Math.ceil(target / 60);
+        const timer = setInterval(() => {
+          current = Math.min(current + step, target);
+          el.textContent = current + (target >= 1000 ? '+' : '');
+          if (current >= target) clearInterval(timer);
+        }, 25);
+      });
+    }
+  </script>
+</body>
+</html>

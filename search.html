@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LocalShop — Search Shops</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+</head>
+<body class="page-inner">
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-brand">
+      <a href="index.html" style="text-decoration:none;display:flex;align-items:center;gap:8px">
+        <span class="brand-icon">🛍</span>
+        <span class="brand-name">LocalShop</span>
+      </a>
+    </div>
+    <ul class="nav-links">
+      <li><a href="index.html" class="nav-link"><i class="fas fa-home"></i> Home</a></li>
+      <li><a href="search.html" class="nav-link active"><i class="fas fa-search"></i> Search</a></li>
+      <li><a href="add-shop.html" class="nav-link"><i class="fas fa-plus-circle"></i> Add Shop</a></li>
+      <li><a href="about.html" class="nav-link"><i class="fas fa-info-circle"></i> About</a></li>
+      <li><a href="login.html" class="nav-link nav-login"><i class="fas fa-user"></i> Login</a></li>
+    </ul>
+    <button class="nav-toggle" id="navToggle"><i class="fas fa-bars"></i></button>
+  </nav>
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <div class="hero-bg-orb orb1"></div>
+    <div class="hero-bg-orb orb2"></div>
+    <h1 class="page-title">Search <span class="gradient-text">Shops</span></h1>
+    <p class="page-subtitle">Find exactly what you're looking for nearby</p>
+  </div>
+
+  <!-- SEARCH BAR -->
+  <section class="search-section">
+    <div class="search-bar glass-card">
+      <i class="fas fa-search search-icon"></i>
+      <input type="text" id="searchInput" placeholder="Shop name, category, or location…"/>
+      <button class="btn-primary" onclick="performSearch()">Search</button>
+    </div>
+
+    <!-- FILTERS -->
+    <div class="filter-row">
+      <button class="filter-btn active" data-cat="All" onclick="filterByCategory(this, 'All')">All</button>
+      <button class="filter-btn" data-cat="Food" onclick="filterByCategory(this, 'Food')">🍔 Food</button>
+      <button class="filter-btn" data-cat="Fashion" onclick="filterByCategory(this, 'Fashion')">👗 Fashion</button>
+      <button class="filter-btn" data-cat="Electronics" onclick="filterByCategory(this, 'Electronics')">📱 Electronics</button>
+      <button class="filter-btn" data-cat="Books" onclick="filterByCategory(this, 'Books')">📚 Books</button>
+      <button class="filter-btn" data-cat="Health" onclick="filterByCategory(this, 'Health')">💊 Health</button>
+      <button class="filter-btn" data-cat="Beauty" onclick="filterByCategory(this, 'Beauty')">💄 Beauty</button>
+      <button class="filter-btn" data-cat="Sports" onclick="filterByCategory(this, 'Sports')">⚽ Sports</button>
+    </div>
+  </section>
+
+  <!-- RESULTS -->
+  <section class="results-section">
+    <div class="results-meta">
+      <span id="resultsCount">Loading…</span>
+    </div>
+    <div class="shops-grid" id="resultsGrid">
+      <!-- Populated by JS -->
+    </div>
+    <div class="no-results hidden" id="noResults">
+      <div class="no-results-icon">🔍</div>
+      <h3>No shops found</h3>
+      <p>Try a different keyword or category</p>
+      <a href="add-shop.html" class="btn-primary">Add This Shop</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p class="footer-copy">© 2025 LocalShop. Supporting local communities.</p>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    let activeCategory = 'All';
+    let activeQuery    = '';
+
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('q'))        { activeQuery    = params.get('q'); }
+    if (params.get('category')) { activeCategory = params.get('category'); }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      if (activeQuery)    document.getElementById('searchInput').value = activeQuery;
+      if (activeCategory !== 'All') {
+        document.querySelectorAll('.filter-btn').forEach(b => {
+          b.classList.toggle('active', b.dataset.cat === activeCategory);
+        });
+      }
+      renderResults();
+    });
+
+    function performSearch() {
+      activeQuery = document.getElementById('searchInput').value.toLowerCase();
+      renderResults();
+    }
+    document.getElementById('searchInput').addEventListener('keydown', e => {
+      if (e.key === 'Enter') performSearch();
+    });
+
+    function filterByCategory(btn, cat) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeCategory = cat;
+      renderResults();
+    }
+
+    async function renderResults() {
+      const grid  = document.getElementById('resultsGrid');
+      const noRes = document.getElementById('noResults');
+      const count = document.getElementById('resultsCount');
+
+      count.textContent = 'Loading…';
+      grid.innerHTML = '';
+      noRes.classList.add('hidden');
+
+      try {
+        const qs  = new URLSearchParams();
+        if (activeQuery)            qs.set('q', activeQuery);
+        if (activeCategory !== 'All') qs.set('category', activeCategory);
+
+        const res   = await fetch(`${API_BASE}/get-shops?${qs}`);
+        const data  = await res.json();
+        const shops = data.shops || [];
+
+        if (shops.length === 0) {
+          noRes.classList.remove('hidden');
+          count.textContent = '0 shops found';
+        } else {
+          count.textContent = `${shops.length} shop${shops.length !== 1 ? 's' : ''} found`;
+          grid.innerHTML = shops.map(s => createShopCard(s)).join('');
+          grid.querySelectorAll('.shop-card').forEach((c, i) => {
+            c.style.animationDelay = `${i * 0.07}s`;
+          });
+        }
+      } catch (err) {
+        count.textContent = 'Failed to load shops';
+        grid.innerHTML = `<p style="color:red;padding:1rem">❌ Cannot connect to server. Make sure the backend is running.</p>`;
+      }
+    }
+  </script>
+</body>
+</html>

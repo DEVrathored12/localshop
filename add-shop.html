@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LocalShop — Add a Shop</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+</head>
+<body class="page-inner">
+
+  <nav class="navbar" id="navbar">
+    <div class="nav-brand">
+      <a href="index.html" style="text-decoration:none;display:flex;align-items:center;gap:8px">
+        <span class="brand-icon">🛍</span><span class="brand-name">LocalShop</span>
+      </a>
+    </div>
+    <ul class="nav-links">
+      <li><a href="index.html" class="nav-link"><i class="fas fa-home"></i> Home</a></li>
+      <li><a href="search.html" class="nav-link"><i class="fas fa-search"></i> Search</a></li>
+      <li><a href="add-shop.html" class="nav-link active"><i class="fas fa-plus-circle"></i> Add Shop</a></li>
+      <li><a href="about.html" class="nav-link"><i class="fas fa-info-circle"></i> About</a></li>
+      <li><a href="login.html" class="nav-link nav-login"><i class="fas fa-user"></i> Login</a></li>
+    </ul>
+    <button class="nav-toggle" id="navToggle"><i class="fas fa-bars"></i></button>
+  </nav>
+
+  <div class="page-header">
+    <div class="hero-bg-orb orb1"></div>
+    <div class="hero-bg-orb orb2"></div>
+    <h1 class="page-title">Add Your <span class="gradient-text">Shop</span></h1>
+    <p class="page-subtitle">List your business and reach more local customers</p>
+  </div>
+
+  <section class="form-section">
+    <div class="add-shop-layout">
+
+      <!-- FORM CARD -->
+      <div class="form-card glass-card">
+        <h2 class="form-title"><i class="fas fa-store"></i> Shop Information</h2>
+
+        <form id="addShopForm" onsubmit="handleAddShop(event)">
+
+          <div class="form-group">
+            <label>Shop Name <span class="req">*</span></label>
+            <div class="input-group glass-input">
+              <i class="fas fa-store"></i>
+              <input type="text" id="shopName" placeholder="e.g., Aroma Café" required/>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Category <span class="req">*</span></label>
+            <div class="input-group glass-input">
+              <i class="fas fa-tag"></i>
+              <select id="shopCategory" required>
+                <option value="">Select a category…</option>
+                <option value="Food">🍔 Food</option>
+                <option value="Fashion">👗 Fashion</option>
+                <option value="Electronics">📱 Electronics</option>
+                <option value="Books">📚 Books & Stationery</option>
+                <option value="Health">💊 Health & Pharmacy</option>
+                <option value="Beauty">💄 Beauty & Wellness</option>
+                <option value="Sports">⚽ Sports & Fitness</option>
+                <option value="Home">🏠 Home & Furniture</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Address <span class="req">*</span></label>
+            <div class="input-group glass-input">
+              <i class="fas fa-map-marker-alt"></i>
+              <input type="text" id="shopAddress" placeholder="Full address of your shop" required/>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Contact Number <span class="req">*</span></label>
+            <div class="input-group glass-input">
+              <i class="fas fa-phone"></i>
+              <input type="tel" id="shopContact" placeholder="+91 98765 43210" required/>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Description <span class="optional">(optional)</span></label>
+            <div class="input-group glass-input textarea-group">
+              <i class="fas fa-align-left" style="align-self:flex-start;margin-top:4px"></i>
+              <textarea id="shopDesc" placeholder="Tell customers what makes your shop special…" rows="3"></textarea>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Instagram Handle <span class="optional">(optional)</span></label>
+            <div class="input-group glass-input">
+              <i class="fab fa-instagram"></i>
+              <input type="text" id="shopInsta" placeholder="your_shop_handle (without @)"/>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Website <span class="optional">(optional)</span></label>
+            <div class="input-group glass-input">
+              <i class="fas fa-globe"></i>
+              <input type="url" id="shopWebsite" placeholder="https://yourshop.com"/>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Opening Hours <span class="optional">(optional)</span></label>
+            <div class="input-group glass-input">
+              <i class="fas fa-clock"></i>
+              <input type="text" id="shopTiming" placeholder="e.g., Mon–Sat: 9am – 9pm"/>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Tags <span class="optional">(optional, comma separated)</span></label>
+            <div class="input-group glass-input">
+              <i class="fas fa-hashtag"></i>
+              <input type="text" id="shopTags" placeholder="e.g., organic, delivery, veg"/>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Rating <span class="optional">(optional, 0–5)</span></label>
+            <div class="input-group glass-input">
+              <i class="fas fa-star"></i>
+              <input type="number" id="shopRating" placeholder="e.g., 4.5" min="0" max="5" step="0.1"/>
+            </div>
+          </div>
+
+          <div id="formMsg" class="form-msg hidden"></div>
+
+          <div class="form-actions">
+            <button type="reset" class="btn-outline">
+              <i class="fas fa-undo"></i> Reset
+            </button>
+            <button type="submit" class="btn-primary btn-glow">
+              <i class="fas fa-plus"></i> Add Shop
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- SIDE INFO -->
+      <div class="add-shop-side">
+        <div class="side-card glass-card">
+          <div class="side-icon">🎯</div>
+          <h3>Why list on LocalShop?</h3>
+          <ul class="side-list">
+            <li><i class="fas fa-check-circle"></i> Reach local customers easily</li>
+            <li><i class="fas fa-check-circle"></i> Free listing, no hidden fees</li>
+            <li><i class="fas fa-check-circle"></i> Easy to update your details</li>
+            <li><i class="fas fa-check-circle"></i> Connect via Instagram</li>
+          </ul>
+        </div>
+
+        <div class="side-card glass-card">
+          <div class="side-icon">📋</div>
+          <h3>Tips for a great listing</h3>
+          <ul class="side-list">
+            <li><i class="fas fa-lightbulb"></i> Use your official shop name</li>
+            <li><i class="fas fa-lightbulb"></i> Include your full address</li>
+            <li><i class="fas fa-lightbulb"></i> Add a short description</li>
+            <li><i class="fas fa-lightbulb"></i> Keep contact info updated</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p class="footer-copy">© 2025 LocalShop. Supporting local communities.</p>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    async function handleAddShop(e) {
+      e.preventDefault();
+      const msg = document.getElementById('formMsg');
+
+      if (!isLoggedIn()) {
+        msg.className = 'form-msg error';
+        msg.textContent = '⚠️ Please login first to add a shop.';
+        msg.classList.remove('hidden');
+        setTimeout(() => window.location.href = 'login.html', 1500);
+        return;
+      }
+
+      const shop = {
+        name:        document.getElementById('shopName').value.trim(),
+        category:    document.getElementById('shopCategory').value,
+        address:     document.getElementById('shopAddress').value.trim(),
+        contact:     document.getElementById('shopContact').value.trim(),
+        description: document.getElementById('shopDesc').value.trim(),
+        instagram:   document.getElementById('shopInsta').value.trim(),
+        website:     document.getElementById('shopWebsite').value.trim(),
+        timing:      document.getElementById('shopTiming').value.trim(),
+        tags:        document.getElementById('shopTags').value.trim(),
+        rating:      document.getElementById('shopRating').value
+      };
+
+      try {
+        const res  = await fetch(`${API_BASE}/add-shop`, {
+          method: 'POST',
+          headers: authHeader(),
+          body: JSON.stringify(shop)
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Failed to add shop');
+
+        msg.className = 'form-msg success';
+        msg.textContent = '🎉 Shop added successfully! Redirecting…';
+        msg.classList.remove('hidden');
+        setTimeout(() => window.location.href = `shop-details.html?id=${data.shop._id}`, 1400);
+      } catch (err) {
+        msg.className = 'form-msg error';
+        msg.textContent = `❌ ${err.message}`;
+        msg.classList.remove('hidden');
+      }
+    }
+  </script>
+</body>
+</html>

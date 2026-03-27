@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LocalShop — Shop Details</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+</head>
+<body class="page-inner">
+
+  <nav class="navbar" id="navbar">
+    <div class="nav-brand">
+      <a href="index.html" style="text-decoration:none;display:flex;align-items:center;gap:8px">
+        <span class="brand-icon">🛍</span><span class="brand-name">LocalShop</span>
+      </a>
+    </div>
+    <ul class="nav-links">
+      <li><a href="index.html" class="nav-link"><i class="fas fa-home"></i> Home</a></li>
+      <li><a href="search.html" class="nav-link"><i class="fas fa-search"></i> Search</a></li>
+      <li><a href="add-shop.html" class="nav-link"><i class="fas fa-plus-circle"></i> Add Shop</a></li>
+      <li><a href="about.html" class="nav-link"><i class="fas fa-info-circle"></i> About</a></li>
+      <li><a href="login.html" class="nav-link nav-login"><i class="fas fa-user"></i> Login</a></li>
+    </ul>
+    <button class="nav-toggle" id="navToggle"><i class="fas fa-bars"></i></button>
+  </nav>
+
+  <!-- PAGE HEADER -->
+  <div class="page-header short-header">
+    <div class="hero-bg-orb orb1"></div>
+    <div class="hero-bg-orb orb2"></div>
+    <nav class="breadcrumb">
+      <a href="index.html">Home</a> <span>/</span>
+      <a href="search.html">Search</a> <span>/</span>
+      <span id="breadShopName">Shop Details</span>
+    </nav>
+  </div>
+
+  <!-- DETAILS CONTENT -->
+  <section class="details-section">
+    <div id="shopDetails" class="shop-details-wrap">
+      <!-- Populated by JS -->
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>Loading shop details…</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SIMILAR SHOPS -->
+  <section class="similar-section" id="similarSection" style="display:none">
+    <div class="section-header">
+      <h2>Similar <span class="gradient-text">Shops</span></h2>
+    </div>
+    <div class="shops-grid" id="similarGrid"></div>
+  </section>
+
+  <footer class="footer">
+    <p class="footer-copy">© 2025 LocalShop. Supporting local communities.</p>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const params = new URLSearchParams(window.location.search);
+      const id     = params.get('id');
+
+      try {
+        const res  = await fetch(`${API_BASE}/shops/${id}`);
+        if (!res.ok) throw new Error('Shop not found');
+        const shop = await res.json();
+
+        document.title = `${shop.name} — LocalShop`;
+        document.getElementById('breadShopName').textContent = shop.name;
+
+        const catEmojis = { Food:'🍔', Fashion:'👗', Electronics:'📱', Books:'📚', Health:'💊', Beauty:'💄', Sports:'⚽', Home:'🏠' };
+        const emoji = catEmojis[shop.category] || '🛍';
+
+        document.getElementById('shopDetails').innerHTML = `
+          <div class="details-hero glass-card">
+            <div class="details-emoji">${emoji}</div>
+            <div class="details-info">
+              <div class="details-badge">${shop.category}</div>
+              <h1 class="details-name">${shop.name}</h1>
+              ${shop.rating ? `<div class="details-rating">${'⭐'.repeat(Math.round(shop.rating))} <span>${shop.rating}/5</span></div>` : ''}
+              <p class="details-desc">${shop.description || 'A great local shop serving the community.'}</p>
+              ${shop.tags && shop.tags.length ? `<div class="details-tags">${shop.tags.map(t => `<span class="tag">#${t}</span>`).join('')}</div>` : ''}
+            </div>
+          </div>
+
+          <div class="details-grid">
+            <div class="detail-card glass-card">
+              <div class="dc-icon"><i class="fas fa-map-marker-alt"></i></div>
+              <div><h4>Address</h4><p>${shop.address}</p></div>
+            </div>
+            <div class="detail-card glass-card">
+              <div class="dc-icon"><i class="fas fa-phone"></i></div>
+              <div><h4>Contact</h4><p><a href="tel:${shop.contact}">${shop.contact}</a></p></div>
+            </div>
+            <div class="detail-card glass-card">
+              <div class="dc-icon"><i class="fas fa-tag"></i></div>
+              <div><h4>Category</h4><p>${shop.category}</p></div>
+            </div>
+            ${shop.timing ? `
+            <div class="detail-card glass-card">
+              <div class="dc-icon"><i class="fas fa-clock"></i></div>
+              <div><h4>Opening Hours</h4><p>${shop.timing}</p></div>
+            </div>` : ''}
+            ${shop.website ? `
+            <div class="detail-card glass-card">
+              <div class="dc-icon"><i class="fas fa-globe"></i></div>
+              <div><h4>Website</h4><p><a href="${shop.website}" target="_blank" rel="noopener noreferrer">${shop.website}</a></p></div>
+            </div>` : ''}
+            ${shop.instagram ? `
+            <div class="detail-card glass-card">
+              <div class="dc-icon insta-icon"><i class="fab fa-instagram"></i></div>
+              <div><h4>Instagram</h4><p><a href="https://instagram.com/${shop.instagram}" target="_blank" rel="noopener noreferrer">@${shop.instagram}</a></p></div>
+            </div>` : ''}
+          </div>
+
+          <div class="details-actions">
+            <a href="tel:${shop.contact}" class="btn-primary"><i class="fas fa-phone"></i> Call Now</a>
+            <a href="search.html" class="btn-outline"><i class="fas fa-arrow-left"></i> Back to Results</a>
+            ${shop.website ? `<a href="${shop.website}" target="_blank" rel="noopener noreferrer" class="btn-outline"><i class="fas fa-globe"></i> Website</a>` : ''}
+            ${shop.instagram ? `<a href="https://instagram.com/${shop.instagram}" target="_blank" rel="noopener noreferrer" class="btn-instagram"><i class="fab fa-instagram"></i> Instagram</a>` : ''}
+          </div>
+        `;
+
+        // Similar shops
+        const simRes   = await fetch(`${API_BASE}/get-shops?category=${shop.category}`);
+        const simData  = await simRes.json();
+        const similar  = (simData.shops || []).filter(s => s._id !== shop._id).slice(0, 3);
+        if (similar.length) {
+          document.getElementById('similarSection').style.display = '';
+          document.getElementById('similarGrid').innerHTML = similar.map(s => createShopCard(s)).join('');
+        }
+      } catch (err) {
+        document.getElementById('shopDetails').innerHTML = `
+          <div class="not-found glass-card">
+            <div class="nf-icon">😕</div>
+            <h2>Shop not found</h2>
+            <p>${err.message}</p>
+            <a href="search.html" class="btn-primary">Back to Search</a>
+          </div>`;
+      }
+    });
+  </script>
+</body>
+</html>

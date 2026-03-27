@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LocalShop — Login</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+</head>
+<body class="page-login dark-mode" id="loginBody">
+
+  <!-- ══════════════════════════════════════
+       LAMP ASSEMBLY  (top-center)
+  ══════════════════════════════════════ -->
+  <div class="lamp-assembly" id="lampAssembly">
+    <!-- Rope & fixture -->
+    <div class="lamp-rope"></div>
+    <div class="lamp-fixture">
+      <div class="lamp-socket"></div>
+    </div>
+    <!-- Lamp shade -->
+    <div class="lamp-shade" id="lampShade">
+      <div class="lamp-shade-inner"></div>
+      <!-- Bulb visible inside shade -->
+      <div class="lamp-bulb" id="lampBulb"></div>
+    </div>
+    <!-- Glow cone (light beam) -->
+    <div class="lamp-beam" id="lampBeam"></div>
+    <!-- Click hint -->
+    <div class="lamp-hint" id="lampHint">Click to turn on</div>
+  </div>
+
+  <!-- Ambient light overlay (spreads when lamp on) -->
+  <div class="ambient-light" id="ambientLight"></div>
+
+  <!-- ══════════════════════════════════════
+       LOGIN CARD
+  ══════════════════════════════════════ -->
+  <div class="login-wrapper">
+    <!-- Logo -->
+    <div class="login-logo">
+      <span class="brand-icon">🛍</span>
+      <span class="brand-name">LocalShop</span>
+    </div>
+
+    <!-- Avatar -->
+    <div class="login-avatar">
+      <i class="fas fa-user-circle"></i>
+    </div>
+
+    <!-- Card -->
+    <div class="login-card glass-card" id="loginCard">
+      <div class="login-tabs">
+        <button class="tab-btn active" id="loginTab" onclick="switchTab('login')">Login</button>
+        <button class="tab-btn" id="registerTab" onclick="switchTab('register')">Register</button>
+      </div>
+
+      <!-- LOGIN FORM -->
+      <form id="loginForm" class="auth-form" onsubmit="handleLogin(event)">
+        <div class="input-group glass-input">
+          <i class="fas fa-envelope"></i>
+          <input type="email" placeholder="Email address" required id="loginEmail"/>
+        </div>
+        <div class="input-group glass-input">
+          <i class="fas fa-lock"></i>
+          <input type="password" placeholder="Password" id="loginPassword" required/>
+          <button type="button" class="toggle-pw" onclick="togglePw('loginPassword', this)">
+            <i class="fas fa-eye"></i>
+          </button>
+        </div>
+        <label class="show-pw-label">
+          <input type="checkbox" onchange="togglePwCheck('loginPassword', this)"/>
+          <span>Show password</span>
+        </label>
+        <button type="submit" class="btn-primary btn-full btn-glow">
+          <i class="fas fa-sign-in-alt"></i> Login
+        </button>
+        <p class="auth-alt">Don't have an account? <a href="#" onclick="switchTab('register')">Register</a></p>
+      </form>
+
+      <!-- REGISTER FORM -->
+      <form id="registerForm" class="auth-form hidden" onsubmit="handleRegister(event)">
+        <div class="input-group glass-input">
+          <i class="fas fa-user"></i>
+          <input type="text" placeholder="Full name" required/>
+        </div>
+        <div class="input-group glass-input">
+          <i class="fas fa-envelope"></i>
+          <input type="email" placeholder="Email address" required/>
+        </div>
+        <div class="input-group glass-input">
+          <i class="fas fa-lock"></i>
+          <input type="password" placeholder="Create password" id="regPassword" required/>
+          <button type="button" class="toggle-pw" onclick="togglePw('regPassword', this)">
+            <i class="fas fa-eye"></i>
+          </button>
+        </div>
+        <button type="submit" class="btn-primary btn-full btn-glow">
+          <i class="fas fa-user-plus"></i> Create Account
+        </button>
+        <p class="auth-alt">Already have an account? <a href="#" onclick="switchTab('login')">Login</a></p>
+      </form>
+
+      <div id="authMsg" class="auth-msg"></div>
+    </div>
+
+    <a href="index.html" class="back-home"><i class="fas fa-arrow-left"></i> Back to Home</a>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    /* ── LAMP TOGGLE ── */
+    let lampOn = false;
+    const lampAssembly = document.getElementById('lampAssembly');
+    const lampShade    = document.getElementById('lampShade');
+    const lampBulb     = document.getElementById('lampBulb');
+    const lampBeam     = document.getElementById('lampBeam');
+    const ambientLight = document.getElementById('ambientLight');
+    const loginCard    = document.getElementById('loginCard');
+    const body         = document.getElementById('loginBody');
+    const hint         = document.getElementById('lampHint');
+
+    function toggleLamp() {
+      lampOn = !lampOn;
+      if (lampOn) {
+        lampBulb.classList.add('bulb-on');
+        lampBeam.classList.add('beam-on');
+        ambientLight.classList.add('ambient-on');
+        loginCard.classList.add('card-lit');
+        body.classList.remove('dark-mode');
+        hint.style.opacity = '0';
+      } else {
+        lampBulb.classList.remove('bulb-on');
+        lampBeam.classList.remove('beam-on');
+        ambientLight.classList.remove('ambient-on');
+        loginCard.classList.remove('card-lit');
+        body.classList.add('dark-mode');
+        hint.style.opacity = '1';
+      }
+    }
+
+    lampAssembly.addEventListener('click', toggleLamp);
+
+    /* ── TAB SWITCH ── */
+    function switchTab(tab) {
+      document.getElementById('loginForm').classList.toggle('hidden', tab !== 'login');
+      document.getElementById('registerForm').classList.toggle('hidden', tab !== 'register');
+      document.getElementById('loginTab').classList.toggle('active', tab === 'login');
+      document.getElementById('registerTab').classList.toggle('active', tab === 'register');
+      document.getElementById('authMsg').textContent = '';
+    }
+
+    /* ── TOGGLE PASSWORD ── */
+    function togglePw(id, btn) {
+      const inp = document.getElementById(id);
+      const isText = inp.type === 'text';
+      inp.type = isText ? 'password' : 'text';
+      btn.innerHTML = `<i class="fas fa-eye${isText ? '' : '-slash'}"></i>`;
+    }
+    function togglePwCheck(id, cb) {
+      document.getElementById(id).type = cb.checked ? 'text' : 'password';
+    }
+
+    /* ── AUTH HANDLERS ── */
+    async function handleLogin(e) {
+      e.preventDefault();
+      const msg = document.getElementById('authMsg');
+      const email    = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      try {
+        const res  = await fetch(`${API_BASE}/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Login failed');
+        localStorage.setItem('localshop_token', data.token);
+        localStorage.setItem('localshop_user', data.name);
+        msg.className = 'auth-msg success';
+        msg.textContent = `✅ Welcome back, ${data.name}! Redirecting…`;
+        setTimeout(() => window.location.href = 'index.html', 1200);
+      } catch (err) {
+        msg.className = 'auth-msg error';
+        msg.textContent = `❌ ${err.message}`;
+      }
+    }
+    async function handleRegister(e) {
+      e.preventDefault();
+      const msg = document.getElementById('authMsg');
+      const inputs = document.querySelectorAll('#registerForm input');
+      const name     = inputs[0].value.trim();
+      const email    = inputs[1].value.trim();
+      const password = inputs[2].value;
+      try {
+        const res  = await fetch(`${API_BASE}/register`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, password })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Registration failed');
+        msg.className = 'auth-msg success';
+        msg.textContent = '✅ Account created! Please login.';
+        setTimeout(() => switchTab('login'), 1200);
+      } catch (err) {
+        msg.className = 'auth-msg error';
+        msg.textContent = `❌ ${err.message}`;
+      }
+    }
+  </script>
+</body>
+</html>
