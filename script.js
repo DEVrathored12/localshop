@@ -210,14 +210,22 @@ function authHeader()    { return { 'Content-Type': 'application/json', 'Authori
 /* ══════════════════════════════════════════
    API HELPERS
 ══════════════════════════════════════════ */
-async function apiFetch(endpoint, options = {}) {
+async function apiFetch(endpoint, options = {}, retries = 2) {
   const token   = getToken();
   const headers = { 'Content-Type': 'application/json', ...options.headers };
   if (token) headers['Authorization'] = `Bearer ${token}`;
-  const res  = await fetch(`${API_BASE}${endpoint}`, { ...options, headers });
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.error || 'Something went wrong');
-  return data;
+  try {
+    const res  = await fetch(`${API_BASE}${endpoint}`, { ...options, headers });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Something went wrong');
+    return data;
+  } catch (err) {
+    if (retries > 0) {
+      await new Promise(r => setTimeout(r, 3000));
+      return apiFetch(endpoint, options, retries - 1);
+    }
+    throw err;
+  }
 }
 
 /* ══════════════════════════════════════════
