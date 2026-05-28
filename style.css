@@ -848,3 +848,226 @@ img { max-width:100%; display:block; }
   margin: 6px 0 10px;
   line-height: 1.5;
 }
+
+/* ── DRAWER NAVIGATION ── */
+.drawer-btn {
+  display: none;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  color: var(--text-primary);
+  font-size: 1.1rem;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-left: 8px;
+}
+.drawer-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 200;
+  backdrop-filter: blur(4px);
+}
+.drawer-overlay.open { display: block; }
+.drawer {
+  position: fixed;
+  top: 0; left: -300px;
+  width: 280px;
+  height: 100vh;
+  background: rgba(6,11,20,0.97);
+  border-right: 1px solid var(--glass-border);
+  z-index: 300;
+  display: flex;
+  flex-direction: column;
+  transition: left 0.35s cubic-bezier(.4,0,.2,1);
+  backdrop-filter: blur(20px);
+}
+.drawer.open { left: 0; }
+.drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 20px;
+  border-bottom: 1px solid var(--glass-border);
+}
+.drawer-brand { display: flex; align-items: center; gap: 8px; font-size: 1.2rem; font-weight: 700; }
+.drawer-close { background: none; border: none; color: var(--text-secondary); font-size: 1.2rem; cursor: pointer; }
+.drawer-close:hover { color: var(--teal); }
+.drawer-nav { display: flex; flex-direction: column; padding: 20px 12px; gap: 4px; flex: 1; }
+.drawer-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  color: var(--text-secondary);
+  font-size: .92rem;
+  font-weight: 500;
+  transition: all var(--transition);
+}
+.drawer-link:hover, .drawer-link.active { background: var(--glass-bg); color: var(--teal); }
+.drawer-login { background: var(--teal-soft); color: var(--teal) !important; border: 1px solid rgba(0,212,184,.25); margin-top: 8px; }
+.drawer-footer { padding: 20px; font-size: .75rem; color: var(--text-muted); text-align: center; border-top: 1px solid var(--glass-border); }
+
+@media (max-width: 768px) { .drawer-btn { display: block; } }
+
+/* ── MONTHLY SPEND CALCULATOR ── */
+.calculator-section { padding: 80px 5%; }
+.calculator-wrap {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.calc-items { display: flex; flex-direction: column; gap: 12px; }
+.calc-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 10px;
+  align-items: center;
+}
+.calc-name, .calc-amount {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  color: var(--text-primary);
+  font-family: 'Poppins', sans-serif;
+  font-size: .88rem;
+  outline: none;
+  transition: border-color var(--transition);
+}
+.calc-name:focus, .calc-amount:focus { border-color: rgba(0,212,184,.5); }
+.calc-name::placeholder, .calc-amount::placeholder { color: var(--text-muted); }
+.calc-remove {
+  background: rgba(240,80,80,.12);
+  border: 1px solid rgba(240,80,80,.2);
+  color: #f06060;
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: .85rem;
+  transition: all var(--transition);
+}
+.calc-remove:hover { background: rgba(240,80,80,.25); }
+.calc-add { align-self: flex-start; }
+.calc-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  background: var(--teal-soft);
+  border: 1px solid rgba(0,212,184,.25);
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+}
+.calc-total-amount { font-size: 1.4rem; color: var(--teal); font-weight: 700; }
+
+/* ── BABY PANDA ── */
+.panda {
+  position: fixed;
+  bottom: 20px;
+  left: -80px;
+  z-index: 999;
+  animation: pandaRun 12s linear infinite;
+  cursor: pointer;
+}
+@keyframes pandaRun {
+  0%   { left: -80px; transform: scaleX(1); }
+  45%  { left: calc(100vw + 80px); transform: scaleX(1); }
+  50%  { left: calc(100vw + 80px); transform: scaleX(-1); }
+  95%  { left: -80px; transform: scaleX(-1); }
+  100% { left: -80px; transform: scaleX(1); }
+}
+.panda-body {
+  width: 60px; height: 70px;
+  background: #fff;
+  border-radius: 50% 50% 45% 45%;
+  position: relative;
+  border: 2px solid #222;
+  animation: pandaBounce 0.4s ease-in-out infinite alternate;
+}
+@keyframes pandaBounce {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-6px); }
+}
+.panda-ear {
+  width: 18px; height: 18px;
+  background: #222;
+  border-radius: 50%;
+  position: absolute;
+  top: -10px;
+}
+.panda-ear.left  { left: 6px; }
+.panda-ear.right { right: 6px; }
+.panda-face {
+  position: absolute;
+  top: 10px; left: 50%;
+  transform: translateX(-50%);
+  width: 44px; height: 36px;
+}
+.panda-eye {
+  width: 14px; height: 14px;
+  background: #222;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+}
+.panda-eye.left  { left: 2px; }
+.panda-eye.right { right: 2px; }
+.panda-nose {
+  width: 8px; height: 6px;
+  background: #555;
+  border-radius: 50%;
+  position: absolute;
+  top: 18px; left: 50%;
+  transform: translateX(-50%);
+}
+.panda-mouth {
+  width: 14px; height: 6px;
+  border-bottom: 2px solid #555;
+  border-radius: 0 0 8px 8px;
+  position: absolute;
+  top: 26px; left: 50%;
+  transform: translateX(-50%);
+}
+.panda-belly {
+  width: 30px; height: 28px;
+  background: #f0f0f0;
+  border-radius: 50%;
+  position: absolute;
+  bottom: 8px; left: 50%;
+  transform: translateX(-50%);
+  border: 1px solid #ddd;
+}
+.panda-arm {
+  width: 14px; height: 22px;
+  background: #222;
+  border-radius: 50%;
+  position: absolute;
+  top: 28px;
+  animation: pandaArm 0.4s ease-in-out infinite alternate;
+}
+.panda-arm.left  { left: -8px; transform-origin: top center; }
+.panda-arm.right { right: -8px; transform-origin: top center; animation-delay: 0.2s; }
+@keyframes pandaArm {
+  from { transform: rotate(-20deg); }
+  to   { transform: rotate(20deg); }
+}
+.panda-leg {
+  width: 16px; height: 20px;
+  background: #222;
+  border-radius: 0 0 8px 8px;
+  position: absolute;
+  bottom: -14px;
+  animation: pandaLeg 0.4s ease-in-out infinite alternate;
+}
+.panda-leg.left  { left: 10px; transform-origin: top center; }
+.panda-leg.right { right: 10px; transform-origin: top center; animation-delay: 0.2s; }
+@keyframes pandaLeg {
+  from { transform: rotate(-15deg); }
+  to   { transform: rotate(15deg); }
+}

@@ -10,6 +10,28 @@
 </head>
 <body class="page-home">
 
+  <!-- ── DRAWER OVERLAY ── -->
+  <div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+
+  <!-- ── DRAWER ── -->
+  <div class="drawer" id="drawer">
+    <div class="drawer-header">
+      <div class="drawer-brand">
+        <span>🛍</span>
+        <span class="brand-name">LocalShop</span>
+      </div>
+      <button class="drawer-close" onclick="closeDrawer()"><i class="fas fa-times"></i></button>
+    </div>
+    <nav class="drawer-nav">
+      <a href="index.html" class="drawer-link active"><i class="fas fa-home"></i> Home</a>
+      <a href="search.html" class="drawer-link"><i class="fas fa-search"></i> Search</a>
+      <a href="add-shop.html" class="drawer-link"><i class="fas fa-plus-circle"></i> Add Shop</a>
+      <a href="about.html" class="drawer-link"><i class="fas fa-info-circle"></i> About</a>
+      <a href="login.html" class="drawer-link drawer-login"><i class="fas fa-user"></i> Login</a>
+    </nav>
+    <div class="drawer-footer">© 2025 LocalShop</div>
+  </div>
+
   <!-- ── NAVBAR ── -->
   <nav class="navbar" id="navbar">
     <div class="nav-brand">
@@ -24,6 +46,7 @@
       <li><a href="login.html" class="nav-link nav-login"><i class="fas fa-user"></i> Login</a></li>
     </ul>
     <button class="nav-toggle" id="navToggle"><i class="fas fa-bars"></i></button>
+    <button class="drawer-btn" onclick="openDrawer()"><i class="fas fa-grip-lines"></i></button>
   </nav>
 
   <!-- ── HERO ── -->
@@ -101,6 +124,33 @@
     </div>
   </section>
 
+  <!-- ── MONTHLY SPEND CALCULATOR ── -->
+  <section class="calculator-section">
+    <div class="section-header">
+      <h2>Monthly <span class="gradient-text">Spend Calculator</span></h2>
+      <p>Track how much you spend at local shops every month</p>
+    </div>
+    <div class="calculator-wrap glass-card">
+      <div class="calc-items" id="calcItems">
+        <div class="calc-row">
+          <input type="text" placeholder="Shop name" class="calc-name glass-input"/>
+          <input type="number" placeholder="Amount (₹)" class="calc-amount glass-input" min="0"/>
+          <button class="calc-remove" onclick="removeCalcRow(this)"><i class="fas fa-trash"></i></button>
+        </div>
+      </div>
+      <button class="btn-outline calc-add" onclick="addCalcRow()">
+        <i class="fas fa-plus"></i> Add Shop
+      </button>
+      <div class="calc-total">
+        <span>Total Monthly Spend:</span>
+        <span class="calc-total-amount" id="calcTotal">₹ 0</span>
+      </div>
+      <button class="btn-primary" onclick="calculateTotal()" style="width:100%;justify-content:center;margin-top:1rem">
+        <i class="fas fa-calculator"></i> Calculate
+      </button>
+    </div>
+  </section>
+
   <!-- ── FOOTER ── -->
   <footer class="footer">
     <div class="footer-brand">
@@ -136,7 +186,7 @@
     document.addEventListener('DOMContentLoaded', async () => {
       const grid = document.getElementById('featuredGrid');
       try {
-        const res  = await fetch(`${API_BASE}/api/get-shops`);
+        const res  = await fetch(`${API_BASE}/get-shops`);
         const data = await res.json();
         const shops = (data.shops || []).slice(0, 6);
         grid.innerHTML = shops.map(s => createShopCard(s)).join('');
@@ -159,6 +209,28 @@
         }, 25);
       });
     }
+    // Drawer
+    function openDrawer()  { document.getElementById('drawer').classList.add('open'); document.getElementById('drawerOverlay').classList.add('open'); }
+    function closeDrawer() { document.getElementById('drawer').classList.remove('open'); document.getElementById('drawerOverlay').classList.remove('open'); }
+
+    // Calculator
+    function addCalcRow() {
+      const row = document.createElement('div');
+      row.className = 'calc-row';
+      row.innerHTML = `<input type="text" placeholder="Shop name" class="calc-name glass-input"/><input type="number" placeholder="Amount (₹)" class="calc-amount glass-input" min="0"/><button class="calc-remove" onclick="removeCalcRow(this)"><i class="fas fa-trash"></i></button>`;
+      document.getElementById('calcItems').appendChild(row);
+    }
+    function removeCalcRow(btn) {
+      const rows = document.querySelectorAll('.calc-row');
+      if (rows.length > 1) btn.closest('.calc-row').remove();
+      calculateTotal();
+    }
+    function calculateTotal() {
+      const amounts = document.querySelectorAll('.calc-amount');
+      const total = Array.from(amounts).reduce((sum, i) => sum + (parseFloat(i.value) || 0), 0);
+      document.getElementById('calcTotal').textContent = `₹ ${total.toLocaleString('en-IN')}`;
+    }
+    document.getElementById('calcItems').addEventListener('input', calculateTotal);
   </script>
 </body>
 </html>
