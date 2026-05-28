@@ -1071,3 +1071,55 @@ img { max-width:100%; display:block; }
   from { transform: rotate(-15deg); }
   to   { transform: rotate(15deg); }
 }
+
+/* ── BABY PANDA (SVG version - overrides old) ── */
+.panda-runner {
+  position: fixed;
+  bottom: 30px;
+  z-index: 9999;
+  animation: pandaRun 10s linear infinite;
+  cursor: pointer;
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));
+}
+@keyframes pandaRun {
+  0%   { transform: translateX(-100px) scaleX(1); }
+  48%  { transform: translateX(calc(100vw + 100px)) scaleX(1); }
+  50%  { transform: translateX(calc(100vw + 100px)) scaleX(-1); }
+  98%  { transform: translateX(-100px) scaleX(-1); }
+  100% { transform: translateX(-100px) scaleX(1); }
+}
+.panda-runner svg {
+  animation: pandaSvgBounce 0.35s ease-in-out infinite alternate;
+}
+@keyframes pandaSvgBounce {
+  from { transform: translateY(0) rotate(-3deg); }
+  to   { transform: translateY(-8px) rotate(3deg); }
+}
+.panda-arm-left  { animation: armSwingL 0.35s ease-in-out infinite alternate; transform-origin: 14px 58px; }
+.panda-arm-right { animation: armSwingR 0.35s ease-in-out infinite alternate; transform-origin: 66px 58px; }
+@keyframes armSwingL { from { transform: rotate(-20deg); } to { transform: rotate(20deg); } }
+@keyframes armSwingR { from { transform: rotate(20deg); } to { transform: rotate(-20deg); } }
+.panda-leg-left  { animation: legSwingL 0.35s ease-in-out infinite alternate; transform-origin: 28px 80px; }
+.panda-leg-right { animation: legSwingR 0.35s ease-in-out infinite alternate; transform-origin: 52px 80px; }
+@keyframes legSwingL { from { transform: rotate(-25deg); } to { transform: rotate(25deg); } }
+@keyframes legSwingR { from { transform: rotate(25deg); } to { transform: rotate(-25deg); } }
+
+/* ── PANDA FIX: run at bottom below everything ── */
+.panda-runner {
+  position: fixed !important;
+  bottom: 10px !important;
+  top: auto !important;
+  left: 0 !important;
+  z-index: 5 !important;
+  animation: pandaRunFix 10s linear infinite !important;
+}
+@keyframes pandaRunFix {
+  0%   { transform: translateX(-100px) scaleX(1); }
+  48%  { transform: translateX(calc(100vw + 100px)) scaleX(1); }
+  50%  { transform: translateX(calc(100vw + 100px)) scaleX(-1); }
+  98%  { transform: translateX(-100px) scaleX(-1); }
+  100% { transform: translateX(-100px) scaleX(1); }
+}
+.login-wrapper { z-index: 20 !important; }
+.lamp-assembly { z-index: 50 !important; }
+.ambient-light { z-index: 6 !important; }
