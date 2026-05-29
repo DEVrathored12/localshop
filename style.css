@@ -1188,3 +1188,15 @@ img { max-width:100%; display:block; }
   white-space: nowrap;
   pointer-events: none;
 }
+
+/* ── MUSIC BUTTON POSITION FIX: top right ── */
+#musicBtn {
+  top: 14px !important;
+  bottom: auto !important;
+  right: 20px !important;
+}
+#musicLabel {
+  top: 14px !important;
+  bottom: auto !important;
+  right: 78px !important;
+}
