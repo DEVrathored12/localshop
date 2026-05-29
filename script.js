@@ -464,3 +464,43 @@ function updateNavAuth() {
     };
   }
 }
+
+/* ══════════════════════════════════════════
+   MUSIC PLAYER — works on all pages
+══════════════════════════════════════════ */
+(function() {
+  // Create audio element with free lofi music
+  const audio = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3');
+  audio.loop   = true;
+  audio.volume = 0.3;
+
+  // Create floating music button
+  const btn = document.createElement('div');
+  btn.id = 'musicBtn';
+  btn.innerHTML = `<i class="fas fa-music"></i>`;
+  btn.title = 'Click to play music';
+  document.body.appendChild(btn);
+
+  // Create music label
+  const label = document.createElement('div');
+  label.id = 'musicLabel';
+  label.textContent = '🎵 LocalShop Vibes';
+  document.body.appendChild(label);
+
+  let playing = false;
+
+  btn.addEventListener('click', () => {
+    if (playing) {
+      audio.pause();
+      btn.classList.remove('playing');
+      btn.innerHTML = `<i class="fas fa-music"></i>`;
+      label.style.opacity = '0';
+    } else {
+      audio.play().catch(() => {});
+      btn.classList.add('playing');
+      btn.innerHTML = `<i class="fas fa-pause"></i>`;
+      label.style.opacity = '1';
+    }
+    playing = !playing;
+  });
+})();
