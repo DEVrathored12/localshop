@@ -1200,3 +1200,23 @@ img { max-width:100%; display:block; }
   bottom: auto !important;
   right: 78px !important;
 }
+
+/* ── MUSIC BUTTON FINAL FIX ── */
+#musicBtn {
+  position: fixed !important;
+  top: 12px !important;
+  right: 80px !important;
+  bottom: auto !important;
+  left: auto !important;
+  z-index: 9999 !important;
+  width: 40px !important;
+  height: 40px !important;
+}
+#musicLabel {
+  position: fixed !important;
+  top: 12px !important;
+  right: 128px !important;
+  bottom: auto !important;
+  left: auto !important;
+  z-index: 9998 !important;
+}
