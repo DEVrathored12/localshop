@@ -1220,3 +1220,25 @@ img { max-width:100%; display:block; }
   left: auto !important;
   z-index: 9998 !important;
 }
+
+/* ── MUSIC BUTTON CENTER TOP ── */
+#musicBtn {
+  position: fixed !important;
+  top: 12px !important;
+  left: 50% !important;
+  right: auto !important;
+  bottom: auto !important;
+  transform: translateX(-50%) !important;
+  z-index: 9999 !important;
+  width: 40px !important;
+  height: 40px !important;
+}
+#musicLabel {
+  position: fixed !important;
+  top: 58px !important;
+  left: 50% !important;
+  right: auto !important;
+  bottom: auto !important;
+  transform: translateX(-50%) !important;
+  z-index: 9998 !important;
+}
