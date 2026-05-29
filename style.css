@@ -5,19 +5,19 @@
 
 /* ── CSS Variables ── */
 :root {
-  --bg-dark:        #060b14;
-  --bg-dark2:       #0a1220;
-  --teal:           #00d4b8;
-  --teal-dim:       #00b8a0;
-  --teal-glow:      rgba(0, 212, 184, 0.35);
-  --teal-soft:      rgba(0, 212, 184, 0.12);
-  --glass-bg:       rgba(255,255,255,0.06);
-  --glass-bg-hover: rgba(255,255,255,0.10);
-  --glass-border:   rgba(255,255,255,0.12);
-  --glass-shadow:   0 8px 32px rgba(0,0,0,0.45);
-  --text-primary:   #e8f1ff;
-  --text-secondary: #7a90b0;
-  --text-muted:     #4a5a70;
+  --bg-dark:        #ffffff;
+  --bg-dark2:       #f5f5f5;
+  --teal:           #e63946;
+  --teal-dim:       #c1121f;
+  --teal-glow:      rgba(230, 57, 70, 0.35);
+  --teal-soft:      rgba(230, 57, 70, 0.10);
+  --glass-bg:       rgba(230, 57, 70, 0.06);
+  --glass-bg-hover: rgba(230, 57, 70, 0.12);
+  --glass-border:   rgba(230, 57, 70, 0.20);
+  --glass-shadow:   0 8px 32px rgba(230,57,70,0.15);
+  --text-primary:   #1a0a0a;
+  --text-secondary: #6b2737;
+  --text-muted:     #b07080;
   --radius:         16px;
   --radius-sm:      10px;
   --radius-lg:      24px;
@@ -52,9 +52,9 @@ img { max-width:100%; display:block; }
 /* ── BACKGROUND GRADIENT ── */
 .page-home, .page-inner, .page-login {
   background:
-    radial-gradient(ellipse 80% 60% at 20% 0%, rgba(0,100,120,0.18) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 50% at 80% 100%, rgba(0,80,100,0.14) 0%, transparent 55%),
-    var(--bg-dark);
+    radial-gradient(ellipse 80% 60% at 20% 0%, rgba(230,57,70,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 80% 100%, rgba(193,18,31,0.06) 0%, transparent 55%),
+    #ffffff;
 }
 
 /* ── GLASSMORPHISM CARD ── */
@@ -83,7 +83,7 @@ img { max-width:100%; display:block; }
   justify-content:space-between;
   padding:        0 2.5rem;
   height:         64px;
-  background:     rgba(6,11,20,0.75);
+  background:     rgba(255,255,255,0.90);
   backdrop-filter:blur(20px);
   border-bottom:  1px solid var(--glass-border);
   transition:     background var(--transition);
@@ -150,9 +150,9 @@ img { max-width:100%; display:block; }
   pointer-events:none;
   z-index:      0;
 }
-.orb1 { width:500px; height:500px; background:rgba(0,212,184,0.10); top:-150px; right:10%; }
-.orb2 { width:400px; height:400px; background:rgba(0,80,180,0.10);  bottom:-100px; left:5%; }
-.orb3 { width:300px; height:300px; background:rgba(100,0,180,0.06); top:40%; right:0; }
+.orb1 { width:500px; height:500px; background:rgba(230,57,70,0.08); top:-150px; right:10%; }
+.orb2 { width:400px; height:400px; background:rgba(193,18,31,0.06);  bottom:-100px; left:5%; }
+.orb3 { width:300px; height:300px; background:rgba(255,100,100,0.05); top:40%; right:0; }
 
 .hero-content { position:relative; z-index:1; }
 .hero-badge {
@@ -601,7 +601,7 @@ img { max-width:100%; display:block; }
 
 /* ── FOOTER ── */
 .footer {
-  background:     rgba(0,0,0,.35);
+  background:     rgba(255,240,240,.8);
   border-top:     1px solid var(--glass-border);
   padding:        40px 5%;
   text-align:     center;
@@ -629,7 +629,7 @@ img { max-width:100%; display:block; }
 
 /* DARK MODE (lamp off) */
 .page-login.dark-mode {
-  background: #04080f;
+  background: #fff0f0;
 }
 .page-login.dark-mode .login-card { opacity:.6; filter:brightness(.6); }
 .page-login.dark-mode .login-logo,
